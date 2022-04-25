@@ -44,4 +44,5 @@ function showProgrammingLangs(plan) {
     }
     return str;
 }
+
 console.log(showProgrammingLangs(personalPlanPeter));
