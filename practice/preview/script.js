@@ -24,3 +24,5 @@ console.log(box.getBoundingClientRect());
 const style = window.getComputedStyle(box);
 
 console.log(style);
+
+console.log(document.documentElement.clientWidth);
