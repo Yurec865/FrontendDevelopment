@@ -1,0 +1,22 @@
+{
+  "name": "jscourse",
+  "version": "1.0.0",
+  "description": "course project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yurec865/JsCourse.git"
+  },
+  "author": "yurii",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yurec865/JsCourse/issues"
+  },
+  "homepage": "https://github.com/Yurec865/JsCourse#readme",
+  "devDependencies": {
+    "json-server": "^0.17.0"
+  }
+}
