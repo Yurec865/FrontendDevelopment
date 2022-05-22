@@ -5,8 +5,8 @@ window.addEventListener('DOMContentLoaded', () => {
     //Tabs
 
     const tabs = document.querySelectorAll('.tabheader__item'),
-          tabsContent = document.querySelectorAll('.tabcontent'),
-          tabsParent = document.querySelector('.tabheader__items');
+        tabsContent = document.querySelectorAll('.tabcontent'),
+        tabsParent = document.querySelector('.tabheader__items');
 
     function hideTabContent() {
         tabsContent.forEach(item => {
@@ -49,24 +49,24 @@ window.addEventListener('DOMContentLoaded', () => {
         let days, hours, minutes, seconds;
         const t = Date.parse(endTime) - Date.parse(new Date());
 
-            if (t <= 0) {
-                days = 0;
-                hours = 0;
-                minutes = 0;
-                seconds = 0;
-            } else {
-              days = Math.floor(t / (1000 * 60 * 60 * 24));
-              hours = Math.floor((t / (1000 * 60 * 60) % 24));
-              minutes = Math.floor((t / 1000 / 60) % 60);
-              seconds = Math.floor((t / 1000) % 60);
-            }
+        if (t <= 0) {
+            days = 0;
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+        } else {
+            days = Math.floor(t / (1000 * 60 * 60 * 24));
+            hours = Math.floor((t / (1000 * 60 * 60) % 24));
+            minutes = Math.floor((t / 1000 / 60) % 60);
+            seconds = Math.floor((t / 1000) % 60);
+        }
 
         return {
-            'total' : t,
-            'days' : days,
-            'hours' : hours,
-            'minutes' : minutes,
-            'seconds' : seconds
+            'total': t,
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
         };
     }
 
@@ -80,12 +80,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function setClock(selector, endTime) {
         const timer = document.querySelector(selector),
-              days = timer.querySelector('#days'),
-              hours = timer.querySelector('#hours'),
-              minutes = timer.querySelector('#minutes'),
-              seconds = timer.querySelector('#seconds'),
-              timeInterval = setInterval(updateClock, 1000);
-        
+            days = timer.querySelector('#days'),
+            hours = timer.querySelector('#hours'),
+            minutes = timer.querySelector('#minutes'),
+            seconds = timer.querySelector('#seconds'),
+            timeInterval = setInterval(updateClock, 1000);
+
         updateClock();
 
         function updateClock() {
@@ -107,7 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //Modal
 
     const modalTrigger = document.querySelectorAll('[data-modal]'),
-          modal = document.querySelector('.modal');
+        modal = document.querySelector('.modal');
 
     function openModal() {
         modal.classList.add('show');
@@ -116,7 +116,7 @@ window.addEventListener('DOMContentLoaded', () => {
         clearInterval(modalTimerId);
     }
 
-    modalTrigger.forEach(btn =>{
+    modalTrigger.forEach(btn => {
         btn.addEventListener('click', openModal);
     });
 
@@ -171,7 +171,7 @@ window.addEventListener('DOMContentLoaded', () => {
         render() {
             const element = document.createElement('div');
 
-            if(this.classes.length === 0) {
+            if (this.classes.length === 0) {
                 this.element = 'menu__item';
                 element.classList.add(this.element);
             } else {
@@ -213,7 +213,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     axios.get('http://localhost:3000/menu')
         .then(data => {
-            data.data.forEach(({img, altimg, title, descr, price}) => {
+            data.data.forEach(({
+                img,
+                altimg,
+                title,
+                descr,
+                price
+            }) => {
                 new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
             });
         });
@@ -258,7 +264,7 @@ window.addEventListener('DOMContentLoaded', () => {
         bindPostData(item);
     });
 
-        //Вариант с FormData
+    //Вариант с FormData
 
     // function postData(form) {
     //     form.addEventListener('submit', (e) => {
@@ -326,17 +332,17 @@ window.addEventListener('DOMContentLoaded', () => {
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
             postData('http://localhost:3000/requests', json)
-            .then(data => {
-                console.log(data);
-                showThanksModal(message.success);
-                statusMessage.remove();
-            })
-            .catch(() => {
-                showThanksModal(message.failure);
-            })
-            .finally(() => {
-                form.reset();
-            });
+                .then(data => {
+                    console.log(data);
+                    showThanksModal(message.success);
+                    statusMessage.remove();
+                })
+                .catch(() => {
+                    showThanksModal(message.failure);
+                })
+                .finally(() => {
+                    form.reset();
+                });
         });
     }
 
@@ -367,50 +373,76 @@ window.addEventListener('DOMContentLoaded', () => {
     // Slider
 
     const slides = document.querySelectorAll('.offer__slide'),
-          prev = document.querySelector('.offer__slider-prev'),
-          next = document.querySelector('.offer__slider-next'),
-          total = document.querySelector('#total'),
-          current = document.querySelector('#current');
+        prev = document.querySelector('.offer__slider-prev'),
+        next = document.querySelector('.offer__slider-next'),
+        total = document.querySelector('#total'),
+        current = document.querySelector('#current'),
+        slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+        sildesField = document.querySelector('.offer__slider-inner'),
+        width = window.getComputedStyle(slidesWrapper).width;
 
     let slideIndex = 1;
-
-    showSlides(slideIndex);
+    let offset = 0;
 
     if (slides.length < 10) {
         total.textContent = `0${slides.length}`;
+        current.textContent = `0${slideIndex}`;
     } else {
-        total.textContent = slides.length; 
+        total.textContent = slides.length;
+        current.textContent = slideIndex;
     }
 
-    function showSlides(n) {
-        if (n > slides.length) {
+    sildesField.style.width = 100 * slides.length + '%';
+    sildesField.style.display = 'flex';
+    sildesField.style.transition = '0.5s all';
+
+    slidesWrapper.style.overflow = 'hidden';
+
+    slides.forEach(slide => {
+        slide.style.width = width;
+    });
+
+    next.addEventListener('click', () => {
+        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+            offset = 0;
+        } else {
+            offset += +width.slice(0, width.length - 2);
+        }
+
+        sildesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == slides.length) {
             slideIndex = 1;
+        } else {
+            slideIndex++;
         }
-
-        if (n < 1) {
-            slideIndex = slides.length;
-        }
-
-        slides.forEach(item => item.style.display = 'none');
-
-        slides[slideIndex - 1].style.display = 'block';
 
         if (slides.length < 10) {
             current.textContent = `0${slideIndex}`;
         } else {
-            current.textContent = slideIndex; 
+            current.textContent = slideIndex;
         }
-    }
-
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
-
-    prev.addEventListener('click', () => {
-        plusSlides(-1);
     });
 
-    next.addEventListener('click', () => {
-        plusSlides(1);
+    prev.addEventListener('click', () => {
+        if (offset == 0) {
+            offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+        } else {
+            offset -= +width.slice(0, width.length - 2);
+        }
+
+        sildesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;
+        }
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
     });
 });
