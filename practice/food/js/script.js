@@ -1,4 +1,5 @@
-"use scrict";
+require('es6-promise').polyfill();
+import 'nodelist-foreach-polyfill';
 
 import tabs from './modules/tabs';
 import modal, { openModal } from './modules/modal';
