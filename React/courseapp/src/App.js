@@ -1,41 +1,19 @@
-import React from 'react';
 import './App.css';
 
-const Header = () => {
-  return <h2>Hello world!</h2>
-}
-
-// const Field = () => {
-//   const holder = 'Enter here';
-//   const styledField = {
-//     width: '300px'
-//   };
-//   return <input placeholder={holder} type="text" style={styledField}/>
-// }
-
-function Btn() {
-  const text = 'log in';
-  const logged = true;
-  
-  return <button>{logged ? 'Enter' : text}</button>
-}
-
-class Field extends React.Component {
-  render() {
-    const holder = 'Enter here';
-    const styledField = {
-    width: '300px'
-    };
-    return <input placeholder={holder} type="text" style={styledField}/>
-  }
+function WhoAmI({name, surname, link}) {
+  return (
+    <div>
+      <h1>My name is {name()}, surname - {surname}</h1>
+      <a href={link}>My profile</a>
+    </div>
+  )
 }
 
 function App() {
   return (
     <div className="App">
-      <Header/>
-      <Field/>
-      <Btn/>
+      <WhoAmI name={() => {return 'John'}} surname="Smith" link="facebook.com" />
+      <WhoAmI name={() => {return 'Alex'}} surname="Shepard" link="insta.com" />
     </div>
   );
 }
