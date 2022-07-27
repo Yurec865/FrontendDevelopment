@@ -17,6 +17,12 @@
       "name": "Гардий ",
       "description": "казйол",
       "element": "earth"
+    },
+    {
+      "id": "0c7c8456-82f4-4166-8ef7-555eeae051fe",
+      "name": "Albert Ban",
+      "description": "asd",
+      "element": "water"
     }
   ],
   "filters": [
